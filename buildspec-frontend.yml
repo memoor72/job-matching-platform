@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 19
+    commands:
+      - echo Installing dependencies...
+      - npm install
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t matching-frontend .
+      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 0628-9434-2784.dkr.ecr.us-east-2.amazonaws.com)
+      - docker tag matching-frontend:latest 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+      - docker push 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+
