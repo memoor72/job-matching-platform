@@ -1,0 +1,14 @@
+# frontend-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: matching-frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: matching-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+

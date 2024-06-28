@@ -1,0 +1,21 @@
+# frontend-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matching-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: matching-frontend
+  template:
+    metadata:
+      labels:
+        app: matching-frontend
+    spec:
+      containers:
+      - name: matching-frontend
+        image: 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+        ports:
+        - containerPort: 80
+

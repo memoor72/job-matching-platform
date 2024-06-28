@@ -1,0 +1,14 @@
+# backend-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: matching-backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: matching-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
