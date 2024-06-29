@@ -2,10 +2,8 @@ version: 0.2
 
 env:
   secrets-manager:
-    DOCKERHUB_USERNAME: docker-token:username
-    DOCKERHUB_ACCESS_TOKEN: docker-token:password
-  variables:
-    GIT_URL: "https://github.com/memoor72/job-matching-platform.git"
+    DOCKERHUB_USERNAME: docker-token:username:AWSCURRENT
+    DOCKERHUB_ACCESS_TOKEN: docker-token:password:AWSCURRENT
 
 phases:
   install:
@@ -18,7 +16,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Docker Hub...
-      - echo $DOCKERHUB_ACCESS_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      - echo $DOCKERHUB_ACCESS_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin || (echo "Docker Hub login failed" && exit 1)
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 062894342784.dkr.ecr.us-east-1.amazonaws.com
   build:
