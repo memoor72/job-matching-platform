@@ -1,12 +1,5 @@
 version: 0.2
 
-env:
-  variables:
-    AWS_DEFAULT_REGION: us-east-1
-  secrets-manager:
-    DOCKERHUB_USERNAME: docker-token:dockerhub_username
-    DOCKERHUB_ACCESS_TOKEN: docker-token:dockerhub_access_token
-
 phases:
   install:
     runtime-versions:
@@ -16,13 +9,22 @@ phases:
       - npm install
   pre_build:
     commands:
-      - echo Logging in to Docker Hub...
-      - echo $DOCKERHUB_ACCESS_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      - echo Logging in to Amazon ECR...
+      - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
+      - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t matching-backend .
-      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com)
       - docker tag matching-backend:latest 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
       - docker push 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
+
+env:
+  secrets-manager:
+    DOCKER_USERNAME: "docker-token:username"
+    DOCKER_PASSWORD: "docker-token:password"
 
