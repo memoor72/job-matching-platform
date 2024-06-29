@@ -4,6 +4,8 @@ env:
   secrets-manager:
     DOCKERHUB_USERNAME: docker-token:username
     DOCKERHUB_ACCESS_TOKEN: docker-token:password
+  variables:
+    GIT_URL: "https://github.com/memoor72/job-matching-platform.git"
 
 phases:
   install:
@@ -30,4 +32,6 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 062894342784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
-
+artifacts:
+  files:
+    - '**/*'
