@@ -9,6 +9,10 @@ phases:
     commands:
       - echo Installing dependencies...
       - npm install
+  pre_build:
+    commands:
+      - echo Logging in to Docker Hub...
+      - echo $DOCKERHUB_ACCESS_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin
   build:
     commands:
       - echo Building the Docker image...
