@@ -1,7 +1,14 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    DOCKER_USERNAME: "docker-token:username"
+    DOCKER_PASSWORD: "docker-token:password"
+
 phases:
   install:
+    runtime-versions:
+      nodejs: 14
     commands:
       - echo Installing dependencies...
       - npm install
@@ -20,9 +27,4 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
-
-env:
-  secrets-manager:
-    DOCKER_USERNAME: "docker-token:username"
-    DOCKER_PASSWORD: "docker-token:password"
 
