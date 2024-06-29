@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   secrets-manager:
-    DOCKER_USERNAME: "docker-token:username"
-    DOCKER_PASSWORD: "docker-token:password"
+    DOCKERHUB_USERNAME: "docker-token:username"
+    DOCKERHUB_ACCESS_TOKEN: "docker-token:password"
 
 phases:
   install:
