@@ -4,8 +4,8 @@ env:
   variables:
     AWS_DEFAULT_REGION: us-east-1
   secrets-manager:
-    DOCKERHUB_USERNAME: docker-token:dockerhub_username
-    DOCKERHUB_ACCESS_TOKEN: docker-token:dockerhub_access_token
+    DOCKERHUB_USERNAME: docker-token:username
+    DOCKERHUB_ACCESS_TOKEN: docker-token:password
 
 phases:
   install:
