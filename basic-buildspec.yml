@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   secrets-manager:
-    DOCKERHUB_USERNAME: "docker-token:username":AWSCURRENT
-    DOCKERHUB_ACCESS_TOKEN: "docker-token:password":AWSCURRENT
+    DOCKERHUB_USERNAME: docker-token:username:AWSCURRENT
+    DOCKERHUB_ACCESS_TOKEN: docker-token:password:AWSCURRENT
 
 phases:
   install:
