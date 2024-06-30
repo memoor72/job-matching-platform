@@ -4,7 +4,10 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - echo "Basic install phase"
+      - echo "Installing dependencies..."
       - rm -rf node_modules  # Clean the node_modules directory
       - npm install
+  pre_build:
+    commands:
+      - echo "DOCKERHUB_USERNAME: $DOCKERHUB_USERNAME"
 
