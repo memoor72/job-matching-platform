@@ -1,8 +1,6 @@
 version: 0.2
 
 env:
-  variables:
-    AWS_DEFAULT_REGION: us-east-1
   secrets-manager:
     DOCKERHUB_USERNAME: docker-token:username
     DOCKERHUB_ACCESS_TOKEN: docker-token:password
@@ -13,6 +11,7 @@ phases:
       nodejs: 14
     commands:
       - echo "Installing dependencies..."
+      - rm -rf node_modules  # Clean the node_modules directory
       - npm install
   pre_build:
     commands:
@@ -26,4 +25,7 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 062894342784.dkr.ecr.us-east-1.amazonaws.com
       - docker tag matching-frontend:latest 062894342784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
       - docker push 062894342784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+artifacts:
+  files:
+    - '**/*'
 
