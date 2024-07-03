@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: matching-frontend
+  namespace: default
 spec:
   replicas: 3
   selector:
@@ -13,9 +14,18 @@ spec:
       labels:
         app: matching-frontend
     spec:
+      serviceAccountName: ecr-access
       containers:
       - name: matching-frontend
-        image: 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+        image: 062894342784.dkr.ecr.us-east-1.amazonaws.com/matching-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+      imagePullSecrets:
+      - name: regcred
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
 

@@ -3,32 +3,78 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: matching-backend
+  namespace: default
+  annotations:
+    deployment.kubernetes.io/revision: "9"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      # Add your configuration details here if necessary
+  creationTimestamp: "2024-06-28T19:41:34Z"
+  generation: 9
+  resourceVersion: "1224261"
+  uid: a37194e5-59c0-478b-b853-eaa05033446b
 spec:
+  progressDeadlineSeconds: 600
   replicas: 3
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: matching-backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2024-07-03T11:20:57-06:00"
       labels:
         app: matching-backend
     spec:
+      serviceAccountName: ecr-access
       containers:
       - name: matching-backend
-        image: 0628-9434-2784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
+        image: 062894342784.dkr.ecr.us-east-1.amazonaws.com/matching-backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
+          protocol: TCP
         env:
         - name: DB_HOST
-          value: "job-matching-database.cwpofmfg5t4m.us-east-1.rds.amazonaws.com"
+          value: job-matching-database.cwpofmfg5t4m.us-east-1.rds.amazonaws.com
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-credentials
               key: username
+              name: db-credentials
         - name: DB_PASS
           valueFrom:
             secretKeyRef:
-              name: db-credentials
               key: password
+              name: db-credentials
+      imagePullSecrets:
+      - name: regcred
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  conditions:
+  - lastTransitionTime: "2024-06-28T19:41:34Z"
+    lastUpdateTime: "2024-06-28T19:41:34Z"
+    message: Deployment does not have minimum availability.
+    reason: MinimumReplicasUnavailable
+    status: "False"
+    type: Available
+  - lastTransitionTime: "2024-07-03T17:30:58Z"
+    lastUpdateTime: "2024-07-03T17:30:58Z"
+    message: ReplicaSet "matching-backend-74c57f5587" has timed out progressing.
+    reason: ProgressDeadlineExceeded
+    status: "False"
+    type: Progressing
+  observedGeneration: 9
+  replicas: 4
+  unavailableReplicas: 4
+  updatedReplicas: 1
 
